@@ -26,11 +26,11 @@ let longName = '김수한무 거북이와 두루미 \
 허리케인에 담벼락 담벼락에 서생원 \
 서생원에 고양이 고양이엔 바둑이 \
 바둑이는 돌돌이';
-
 // ⚠️ 줄바뀜 되는 것이 아님
 // 큰따옴표도 마찬가지
 console.log(longName);
 
+// 백틱: 따옴표와 같음. 문자열 안에 탭과 줄바꿈 그대로 사용 가능
 let word9 = `헬로헬로~ 🤩`;
 console.log(word9);
 
@@ -42,6 +42,8 @@ console.log(word10);
 const NAME = '홍길동';
 let age = 20;
 let married = false;
+
+console.log('제 이름은 ' + NAME + ', 나이는 ' + age + '세구요, ' + (married ? '기혼' : '미혼') + '입니다.');
 
 console.log(
 `제 이름은 ${NAME}, 나이는 ${age}세구요, \
