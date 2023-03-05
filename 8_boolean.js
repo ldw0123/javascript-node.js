@@ -54,6 +54,7 @@ let x = 14;
 // x = 6;
 // x = 25;
 console.log(
+  'x: ',
   (x > 10 && x <= 20) || x % 3 === 0    // true || false -> true 반환
 );
 
@@ -141,4 +142,45 @@ console.log(
   null == false,      // false
   undefined == false, // false
   NaN == false,       // false
+);
+
+let x3 = 0;   
+let y3 = 1;
+x3 && x3++; // 앞부분이 0, 즉 false이므로 뒷 부분이 실행되지 않음
+y3 && y3++;
+console.log(x3, y3);  // 0 2
+
+let x4 = 2;
+let y4 = 3;
+console.log(
+  x4 % 2 ? '홀' : '짝',   // 짝
+  y4 % 2 ? '홀' : '짝'    // 홀
+);
+
+let x5 = '';      // false
+let y5 = '회사원';  // true
+let z5 = x5 || y5;
+console.log(z5);
+x5 = x5 || '단기알바';  // false || true. 뒤의 것이 실행됨
+y5 = y5 || '단기알바';  // true || true. 뒤의 것은 실행되지 않음
+console.log(x5, y5);
+
+// boolean으로 직접 변환
+// 한 번 부정
+console.log(
+  '!으로 한 번 부정.',
+  !1, !-999, !'hello',
+  !0, !'', !null
+);
+// ⭐️ 두 번 부정하여 해당 boolean값으로
+console.log(
+  '두 번 부정하여 해당 boolean값으로.',
+  !!1, !!-999, !!'hello',
+  !!0, !!'', !!null
+);
+let x6 = 123;
+
+console.log(
+  'x는 홀수인가?',
+  !!(x6 % 2)
 );
