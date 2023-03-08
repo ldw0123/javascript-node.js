@@ -58,10 +58,10 @@ console.log();
 let x3 = 1;
 let y3 = 19 === 3 + 4 * 2 ** ++x3;
 
-console.log(3);
+console.log(y3);
 
 console.log(
-  2 > 3 || 4 % 2 === 0,
+  2 > 3 || 4 % 2 === 0,     // false||0 -> 0   // 0 === 0 -> true
   2 > (3 || 4) % 2 === 0,
   2 > 3 || 4 % (2 === 0)
 );
