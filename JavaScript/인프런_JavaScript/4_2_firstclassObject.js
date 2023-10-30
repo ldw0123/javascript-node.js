@@ -137,21 +137,21 @@ const jeonIntro = getIntroFunc('전우치', false);
 hongIntro();
 jeonIntro();
 
-const add2 = (a, b) => a + b; // 14
-const sub = (a, b) => a - b;  // 6
-const mul = (a, b) => a * b;  // 40
-const div = (a, b) => a / b;  // 2.5
+const add2 = (a, b) => a + b;
+const sub = (a, b) => a - b;
+const mul = (a, b) => a * b;
+const div = (a, b) => a / b;
 
 function comb3ArmFuncs(armFunc1, armFunc2, armFunc3) {
   return (x, y) => armFunc3(armFunc2(armFunc1(x, y), y), y);
 }
 
-const add_mul_sub = comb3ArmFuncs(add2, mul, sub); // comb3ArmFuncs(add2, mul, sub); 함수 호출, 매개변수 전달
+const add_mul_sub = comb3ArmFuncs(add2, mul, sub);
 const mul_add_div = comb3ArmFuncs(mul, add2, div);
 const div_add_mul = comb3ArmFuncs(div, add2, mul);
 
 console.log(
-  add_mul_sub(10, 4), // ((10+4)*4)-4 == 52
+  add_mul_sub(10, 4), // 52
   mul_add_div(10, 4), // 11
   div_add_mul(10, 4)  // 26 
 );

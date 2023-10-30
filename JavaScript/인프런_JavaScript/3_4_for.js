@@ -122,7 +122,7 @@ for (let i = 1; i <= 10; i++) {
 }
 console.log('for 루프 종료\n');
 
-console.log("i === 5 이면 반복문 종료"); 
+console.log("i === 5 이면 반복문 종료");
 for (let i = 1; i <= 10; i++) {
   if (i === 5) break;   // break:  블록을 종료하고 빠져나옴
   console.log(i);

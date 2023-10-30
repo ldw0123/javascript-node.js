@@ -95,7 +95,7 @@ console.log(
   arr4.indexOf(4) // -1
 );
 
-// 5) join - 인자로 구분하고, 요소들을 문자열로 연결하여 반환
+// 5) join - 인자로 주어진 값으로 구분하여 요소들을 문자열로 연결하여 반환
 const arr5 = ['a', 'b', 'c', 'd', 'e'];
 const arr6 = [
   1, true, null, undefined, '가나다', { x: 0 }, [1, 2, 3]

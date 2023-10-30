@@ -57,7 +57,7 @@ function logCurrentTemp () {
   console.log(`현재 온도는 섭씨 ${currentTemp}도입니다.`);
 }
 
-console.log('반환값:', logCurrentTemp()); // return 문이 정의되어 있지 않으면(함수의 return값이 없으면) undefined 반환
+console.log('반환값:', logCurrentTemp()); // return 문이 정의되어 있지 않으면 undefined 반환
 
 // ⭐️ return문은 꼭 마지막에
 function add (x, y) {
@@ -86,8 +86,7 @@ function add (x, y) {
 console.log(add(2, 7));
 
 // 2.상수나 변수에 함수를 대입 (함수도 값)
-// 함수를 변수에 할당함(일급 객체)
-const subt = function (x, y) {  // 함수의 이름이 subt이기 때문에, 따로 이름 설정x
+const subt = function (x, y) {
   return x - y;
 }
 
@@ -109,8 +108,8 @@ add = function (x, y) {
 console.log(add(2, 7));
 
 // 3. 화살표 함수
-// 한 줄 안에 값만 반환시. 매개변수를 받고 값을 반환할 때 주로 사용
-const mult = (x, y) => x * y; // 블록 없는 화살표 함수에는 return 필요x
+// 한 줄 안에 값만 반환시
+const mult = (x, y) => x * y;
 
 console.log(mult(2, 7));
 
@@ -118,7 +117,7 @@ console.log(mult(2, 7));
 const mult2 = (x, y) => {
   console.log(`${x}와 ${y}를 곱합니다.`);
   console.log(`결과는 ${x * y}입니다.`);
-  return x * y; // return 필요함
+  return x * y;
 };
 
 console.log(mult2(2, 7));
