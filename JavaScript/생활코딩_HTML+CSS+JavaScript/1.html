@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>WEB - HTML</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1><a href="web.html" class="web">WEB</a></h1>
+	<div id="grid">
+		<ol>
+			<li><a href="1.html" class="saw">HTML</a></li>
+			<li><a href="2.html" class="saw" id="active">CSS</a></li>
+			<li><a href="3.html">JavaScript</a></li>
+		</ol>
+		<div id="article">
+			<div align="right">
+				<input id="night_day" type="button" value="night" onclick="
+				if (document.querySelector('#night_day').value==='night') {
+					document.querySelector('body').style.backgroundColor='black';
+					document.querySelector('body').style.color='white';
+					document.querySelector('#night_day').value='day';
+				}
+				else
+				{
+					document.querySelector('body').style.backgroundColor='white';
+					document.querySelector('body').style.color='black';
+					document.querySelector('#night_day').value='night';
+				}
+				">
+			</div>
+			<h2>HTML이란 무엇인가?</h2>
+
+			<p><a href="https://www.w3.org/TR/html52/" target="_blank">The HyperText Markup Language, or HTML(HyperText Markup Language)</a> is the <strong>standard markup language</strong> for documents designed to be displayed in a web browser. It can be assisted by technologies such as Cascading Style Sheets (CSS) and scripting languages such as JavaScript.</p>
+
+			<p style="margin-top:50px; padding-left:25px;"><u>HTML can embed programs written in a scripting language such as JavaScript, which affects the behavior and content of web pages.</u> Inclusion of CSS defines the look and layout of content. The World Wide Web Consortium (W3C), former maintainer of the HTML and current maintainer of the CSS standards, has encouraged the use of CSS over explicit presentational HTML since 1997.</p>
+
+			<p>In 1980, physicist Tim Berners-Lee, a contractor at CERN, proposed and prototyped ENQUIRE, a system for CERN researchers to use and share documents. In 1989, Berners-Lee wrote a memo proposing an Internet-based hypertext system. Berners-Lee specified HTML and wrote the browser and server software in late 1990. That year, Berners-Lee and CERN data systems engineer Robert Cailliau collaborated on a joint request for funding, but the project was not formally adopted by CERN. In his personal notes[4] from 1990 he listed[5] "some of the many areas in which hypertext is used" and put an encyclopedia first.</p>
+
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+		</div>
+	</div>
+</body>
+</html>

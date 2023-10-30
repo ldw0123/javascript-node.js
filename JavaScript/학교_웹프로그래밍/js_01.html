@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<mata charset="utf-8"/>
+	<title>자바스크립트 예제</title>
+	<script>
+		var num=0;
+		document.write("head 태그 내 실행 순서: "+num+"<br/>");
+	</script>
+	<script>
+		var num=1;
+		document.write("head 태그 내 실행 순서: "+num+"<br/>");
+	</script>
+</head>
+<body>
+	<script>
+		var num=2;
+		document.write("body 태그 내 실행 순서: "+num+"<br/>");
+	</script>
+	<script>
+		var num=3;
+		document.write("body 태그 내 실행 순서: "+num+"<br/>");
+	</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>WEB - CSS</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1><a href="web.html" class="web">WEB</a></h1>
+	<div id="grid">
+		<ol>
+			<li><a href="1.html">HTML</a></li>
+			<li><a href="2.html">CSS</a></li>
+			<li><a href="3.html">JavaScript</a></li>
+		</ol>
+		<div id="article">
+			<div align="right">
+				<input id="night_day" type="button" value="night" onclick="
+				if (document.querySelector('#night_day').value==='night') {
+					document.querySelector('body').style.backgroundColor='black';
+					document.querySelector('body').style.color='white';
+					document.querySelector('#night_day').value='day';
+				}
+				else
+				{
+					document.querySelector('body').style.backgroundColor='white';
+					document.querySelector('body').style.color='black';
+					document.querySelector('#night_day').value='night';
+				}
+				">
+			</div>
+			<h2>CSS란 무엇인가?</h2>
+
+			<p>Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a document written in a markup language such as HTML.[1] CSS is a cornerstone technology of the World Wide Web, alongside HTML and JavaScript.[2]</p>
+
+			<p>CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.[3] This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics, enable multiple web pages to share formatting by specifying the relevant CSS in a separate .css file which reduces complexity and repetition in the structural content as well as enabling the .css file to be cached to improve the page load speed between the pages that share the file and its formatting.</p>
+
+			<p>Separation of formatting and content also makes it feasible to present the same markup page in different styles for different rendering methods, such as on-screen, in print, by voice (via speech-based browser or screen reader), and on Braille-based tactile devices. CSS also has rules for alternate formatting if the content is accessed on a mobile device.[4]</p>
+		</div>
+	</div>
+</body>
+</html>

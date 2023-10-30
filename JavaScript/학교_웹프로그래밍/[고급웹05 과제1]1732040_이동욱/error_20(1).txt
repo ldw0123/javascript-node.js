@@ -1,0 +1,3 @@
+document.write("회원 인증에 실패했습니다.<br/>")
+document.write("웹 문서에 접근할 수 없습니다. 관리자에게 문의하시기 바랍니다.<br/>")
+document.write("관리자 e-mail: gosyhong@gmail.com")

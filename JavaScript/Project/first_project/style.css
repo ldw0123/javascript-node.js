@@ -1,0 +1,26 @@
+.red {
+  color:red;
+  background-color: bisque;
+  text-align: center ;
+}
+
+.border-blue {
+  border: 1px solid blue; 
+}
+
+.img-size {
+  width:  500x;
+  height: 200px;
+}
+  
+.margin-space { /* 요소 바깥쪽의 공간은 margin */
+  margin-top: 40px;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 40px;
+}
+
+.padding-space { /* 요소 안쪽의 공간은 padding */
+  padding-top: 40px;
+  padding-left: 50px;
+}
