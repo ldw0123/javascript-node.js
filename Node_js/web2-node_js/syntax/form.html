@@ -1,0 +1,13 @@
+<!-- form : 입력한 주소로 정보를 서버측에 전송 -->
+<!-- method="post" : 주소창이 http://localhost:8000/create_process 과 같이 데이터가 암호화되어서 전송됨 -->
+<form action="http://localhost:8000/create_process" method="post">
+  <p><input type="text" placeholder="text" name="title" /></p>
+  <p>
+    <textarea name="description"></textarea>
+  </p>
+  <p>
+    <!-- 제출 버튼을 누르면 http://localhost:8000/create_process?title=&description= 과 같이 -->
+    <!-- form 태그의 action 속성이 가리키는 서버로 쿼리스트링의 형태로 데이터를 전송하는 기능. 주소창이 쿼리 스트링으로 변함 -->
+    <input type="submit" />
+  </p>
+</form>
