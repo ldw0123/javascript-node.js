@@ -3,6 +3,7 @@
 var http = require('http');
 var fs = require('fs');
 var url = require('url'); // url이라는 모듈을 사용하고, url을 요구한다
+var qs = require('querystring');
 
 function templateHTML(title, list, body) {
   return `
@@ -86,7 +87,7 @@ var app = http.createServer(function (request, response) {
         title,
         list,
         `
-          <form action="http://localhost:8000/process_create" method="post">
+          <form action="http://localhost:8000/create_process" method="post">
             <p><input type="text" name="title" placeholder="title"></p>
             <p>
               <textarea name="description" placeholder="description"></textarea>
@@ -99,6 +100,26 @@ var app = http.createServer(function (request, response) {
       );
       response.writeHead(200);
       response.end(template);
+    });
+    // pathname이 /create_process 이면
+  } else if (pathname === '/create_process') {
+    // POST 방식으로 전송된 데이터를 가져오기 (이벤트)
+    var body = '';
+    request.on('data', function (data) {
+      // data 인자 : 데이터를 조각조각 수신
+      body = body + data;
+    });
+    request.on('end', function () {
+      // end 인자 : 정보 수신이 끝남. 마지막 데이터를 수신
+      var post = qs.parse(body);
+      var title = post.title;
+      var description = post.description;
+      // fs.writeFile() : 파일 생성
+      fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
+        response.writeHead(302, { location: `/?id=${title}` }); // 302 : 페이지를 redirection 시키라는 의미 cf) 200 : 성공했다는 의미
+        response.end(); // 성공적으로 끝났으면 response.end();
+      });
+      console.log(post.title);
     });
   } else {
     // 페이지를 찾을 수 없으면
