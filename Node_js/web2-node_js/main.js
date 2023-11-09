@@ -116,7 +116,8 @@ var app = http.createServer(function (request, response) {
       var description = post.description;
       // fs.writeFile() : 파일 생성
       fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-        response.writeHead(302, { location: `/?id=${title}` }); // 302 : 페이지를 redirection 시키라는 의미 cf) 200 : 성공했다는 의미
+        // response.writeHead(302, { location: 주소 위치 } : 페이지를 redirection 시키라는 의미 cf) 200 : 성공했다는 의미
+        response.writeHead(302, { location: `/?id=${title}` });
         response.end(); // 성공적으로 끝났으면 response.end();
       });
       console.log(post.title);
