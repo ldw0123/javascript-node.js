@@ -1,40 +1,10 @@
 // 모듈: 기본적으로 제공하는 기능들을 그룹화해놓은 각각의 그룹
-
 var http = require('http');
 var fs = require('fs');
 var url = require('url'); // url이라는 모듈을 사용하고, url을 요구한다
 var qs = require('querystring');
-
-// refactoring 리팩토링
-var template = {
-  HTML: function (title, list, body, control) {
-    return `
-    <!doctype html>
-    <html>
-    <head>
-      <title>WEB1 - ${title}</title>
-      <meta charset="utf-8">
-    </head>
-    <body>
-      <h1><a href="/">WEB</a></h1>
-      ${list}
-      ${control}
-      ${body}
-    </body>
-    </html>
-    `;
-  },
-  list: function (filelist) {
-    var list = '<ul>';
-    var i = 0;
-    while (i < filelist.length) {
-      list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-      i += 1;
-    }
-    list = list + '</ul>';
-    return list;
-  },
-};
+var template = require('./lib/template.js');
+var path = require('path');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -47,21 +17,7 @@ var app = http.createServer(function (request, response) {
       fs.readdir('./data', function (error, filelist) {
         var title = 'Welcome';
         var description = 'Hello, Node.js';
-
-        /*
-        var list = templateList(filelist);
-        var template = templateHTML(
-          title,
-          list,
-          `<h2>${title}</h2>${description}`,
-          `<a href="/create">create</a>`
-        );
-        response.writeHead(200);
-        response.end(template);   
-        */
-
-        // filelist : data 디렉토리의 파일의 리스트
-        var list = template.list(filelist);
+        var list = template.list(filelist); // filelist : data 디렉토리의 파일의 리스트
         // 1.html의 내용
         var html = template.HTML(
           title,
@@ -75,28 +31,26 @@ var app = http.createServer(function (request, response) {
     } else {
       // id 값이 있으면
       fs.readdir('./data', function (error, filelist) {
-        fs.readFile(
-          `data/${queryData.id}`,
-          'utf8',
-          function (err, description) {
-            var title = queryData.id;
-            var list = template.list(filelist);
-            // 1.html의 내용
-            var html = template.HTML(
-              title,
-              list,
-              `<h2>${title}</h2>${description}`,
-              `<a href="/create">create</a>
+        // 입력 정보에 대한 보안 - path.parse().base;
+        var filteredId = path.parse(queryData.id).base;
+        fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
+          var title = queryData.id;
+          var list = template.list(filelist);
+          // 1.html의 내용
+          var html = template.HTML(
+            title,
+            list,
+            `<h2>${title}</h2>${description}`,
+            `<a href="/create">create</a>
               <a href="/update?id=${title}">update</a>
               <form action="delete_process" method="post">
                 <input type="hidden" name="id" value="${title}" />
                 <input type="submit" value="delete" />
               </form>`
-            );
-            response.writeHead(200);
-            response.end(html);
-          }
-        );
+          );
+          response.writeHead(200);
+          response.end(html);
+        });
       });
     }
     // pathname이 /create 이면
@@ -148,7 +102,8 @@ var app = http.createServer(function (request, response) {
     // path가 '/update' 이면
   } else if (pathname === '/update') {
     fs.readdir('./data', function (error, filelist) {
-      fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
+      var filteredId = path.parse(queryData.id).base;
+      fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
         var title = queryData.id;
         var list = template.list(filelist);
         // 1.html의 내용
@@ -202,8 +157,9 @@ var app = http.createServer(function (request, response) {
     request.on('end', function () {
       var post = qs.parse(body);
       var id = post.id;
+      var filteredId = path.parse(id).base;
       // fs.unlink() 파일 삭제
-      fs.unlink(`data/${id}`, function (error) {
+      fs.unlink(`data/${filteredId}`, function (error) {
         response.writeHead(302, { location: `/` });
         response.end();
       });
