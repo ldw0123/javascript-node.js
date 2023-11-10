@@ -5,34 +5,36 @@ var fs = require('fs');
 var url = require('url'); // url이라는 모듈을 사용하고, url을 요구한다
 var qs = require('querystring');
 
-function templateHTML(title, list, body, control) {
-  return `
-  <!doctype html>
-  <html>
-  <head>
-    <title>WEB1 - ${title}</title>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <h1><a href="/">WEB</a></h1>
-    ${list}
-    ${control}
-    ${body}
-  </body>
-  </html>
-  `;
-}
-
-function templateList(filelist) {
-  var list = '<ul>';
-  var i = 0;
-  while (i < filelist.length) {
-    list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-    i += 1;
-  }
-  list = list + '</ul>';
-  return list;
-}
+// refactoring 리팩토링
+var template = {
+  HTML: function (title, list, body, control) {
+    return `
+    <!doctype html>
+    <html>
+    <head>
+      <title>WEB1 - ${title}</title>
+      <meta charset="utf-8">
+    </head>
+    <body>
+      <h1><a href="/">WEB</a></h1>
+      ${list}
+      ${control}
+      ${body}
+    </body>
+    </html>
+    `;
+  },
+  list: function (filelist) {
+    var list = '<ul>';
+    var i = 0;
+    while (i < filelist.length) {
+      list = list + `<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
+      i += 1;
+    }
+    list = list + '</ul>';
+    return list;
+  },
+};
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -45,9 +47,9 @@ var app = http.createServer(function (request, response) {
       fs.readdir('./data', function (error, filelist) {
         var title = 'Welcome';
         var description = 'Hello, Node.js';
-        // filelist : data 디렉토리의 파일의 리스트
+
+        /*
         var list = templateList(filelist);
-        // 1.html의 내용
         var template = templateHTML(
           title,
           list,
@@ -55,7 +57,20 @@ var app = http.createServer(function (request, response) {
           `<a href="/create">create</a>`
         );
         response.writeHead(200);
-        response.end(template);
+        response.end(template);   
+        */
+
+        // filelist : data 디렉토리의 파일의 리스트
+        var list = template.list(filelist);
+        // 1.html의 내용
+        var html = template.HTML(
+          title,
+          list,
+          `<h2>${title}</h2>${description}`,
+          `<a href="/create">create</a>`
+        );
+        response.writeHead(200);
+        response.end(html);
       });
     } else {
       // id 값이 있으면
@@ -65,9 +80,9 @@ var app = http.createServer(function (request, response) {
           'utf8',
           function (err, description) {
             var title = queryData.id;
-            var list = templateList(filelist);
+            var list = template.list(filelist);
             // 1.html의 내용
-            var template = templateHTML(
+            var html = template.HTML(
               title,
               list,
               `<h2>${title}</h2>${description}`,
@@ -79,7 +94,7 @@ var app = http.createServer(function (request, response) {
               </form>`
             );
             response.writeHead(200);
-            response.end(template);
+            response.end(html);
           }
         );
       });
@@ -88,9 +103,9 @@ var app = http.createServer(function (request, response) {
   } else if (pathname === '/create') {
     fs.readdir('./data', function (error, filelist) {
       var title = 'WEB - create';
-      var list = templateList(filelist);
+      var list = template.list(filelist);
       // 1.html의 내용
-      var template = templateHTML(
+      var html = template.HTML(
         title,
         list,
         `
@@ -107,7 +122,7 @@ var app = http.createServer(function (request, response) {
         ''
       );
       response.writeHead(200);
-      response.end(template);
+      response.end(htmnl);
     });
     // pathname이 /create_process 이면
   } else if (pathname === '/create_process') {
@@ -135,9 +150,9 @@ var app = http.createServer(function (request, response) {
     fs.readdir('./data', function (error, filelist) {
       fs.readFile(`data/${queryData.id}`, 'utf8', function (err, description) {
         var title = queryData.id;
-        var list = templateList(filelist);
+        var list = template.list(filelist);
         // 1.html의 내용
-        var template = templateHTML(
+        var html = template.HTML(
           title,
           list,
           `
@@ -155,7 +170,7 @@ var app = http.createServer(function (request, response) {
           `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
         );
         response.writeHead(200);
-        response.end(template);
+        response.end(html);
       });
     });
     // path가 '/update_process' 이면
