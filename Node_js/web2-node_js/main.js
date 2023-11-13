@@ -5,6 +5,7 @@ var url = require('url'); // url이라는 모듈을 사용하고, url을 요구�
 var qs = require('querystring');
 var template = require('./lib/template.js');
 var path = require('path');
+var sanitizeHtml = require('sanitize-html');
 
 var app = http.createServer(function (request, response) {
   var _url = request.url;
@@ -35,16 +36,21 @@ var app = http.createServer(function (request, response) {
         var filteredId = path.parse(queryData.id).base;
         fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
           var title = queryData.id;
+          // sanitizeHtml : 웹사이트에서 사용자가 입력한 HTML 코드를 안전하게 만들어주는 도구. 웹사이트를 보호하고, XSS 공격을 방지한다
+          var sanitizedTitle = sanitizeHtml(title);
+          var sanitizedDescription = sanitizeHtml(description, {
+            allowedTags: ['h1'],
+          });
           var list = template.list(filelist);
           // 1.html의 내용
           var html = template.HTML(
-            title,
+            sanitizedTitle,
             list,
-            `<h2>${title}</h2>${description}`,
+            `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
             `<a href="/create">create</a>
-              <a href="/update?id=${title}">update</a>
+              <a href="/update?id=${sanitizedTitle}">update</a>
               <form action="delete_process" method="post">
-                <input type="hidden" name="id" value="${title}" />
+                <input type="hidden" name="id" value="${sanitizedTitle}" />
                 <input type="submit" value="delete" />
               </form>`
           );
@@ -76,7 +82,7 @@ var app = http.createServer(function (request, response) {
         ''
       );
       response.writeHead(200);
-      response.end(htmnl);
+      response.end(html);
     });
     // pathname이 /create_process 이면
   } else if (pathname === '/create_process') {

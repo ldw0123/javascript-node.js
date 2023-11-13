@@ -1,0 +1,3 @@
+&lt;script&gt;
+location.href = 'https://comic.naver.com/index';
+&lt;/script&gt;
