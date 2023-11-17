@@ -4,7 +4,7 @@ function a() {
 a(); // A
 
 var b = function () {
-  // 변수에 함수(=값)을 담는다
+  // 변수에 함수 (=값)을 담는다
   console.log('B');
 };
 b(); // B
