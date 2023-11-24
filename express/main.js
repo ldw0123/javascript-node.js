@@ -1,3 +1,17 @@
+const express = require('express'); // express 모듈 불러오기
+const app = express(); // express() 함수 호출
+const port = 3000;
+
+// 인자 1 : 경로(path) / 인자2 : 콜백함수
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(port, () => {
+  console.log(`server open: ${port}`);
+});
+
+/*
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
@@ -141,3 +155,4 @@ var app = http.createServer(function(request,response){
     }
 });
 app.listen(3000);
+*/
