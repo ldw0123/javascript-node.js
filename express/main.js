@@ -2,11 +2,18 @@ const express = require('express'); // express 모듈 불러오기
 const app = express(); // express() 함수 호출
 const port = 3000;
 
-// 인자 1 : 경로(path) / 인자2 : 콜백함수
+// app.get(app 객체의 get 메서드) : 라우트(route)
+// 인자 1 : 경로(path) / 인자 2 : 콜백함수
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.get('/page', (req, res) => {
+  res.send('하위하위~');
+});
+
+// app.listen : 포트 번호(3000)로 listen()가 실행될 때 웹서버가 실행되고, 콜백함수 안의 코드가 실행된다
+// 인자 1: 포트 번호 / 인자 2: 콜백함수
 app.listen(port, () => {
   console.log(`server open: ${port}`);
 });
