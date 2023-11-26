@@ -2,14 +2,28 @@ const express = require('express'); // express 모듈 불러오기
 const app = express(); // express() 함수 호출
 const port = 3000;
 
+var fs = require('fs');
+var template = require('./lib/template.js');
+
 // app.get(app 객체의 get 메서드) : 라우트(route)
 // 인자 1 : 경로(path) / 인자 2 : 콜백함수
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  fs.readdir('./data', function (error, filelist) {
+    var title = 'Welcome';
+    var description = 'Hello, Node.js';
+    var list = template.list(filelist);
+    var html = template.HTML(
+      title,
+      list,
+      `<h2>${title}</h2>${description}`,
+      `<a href="/create">create</a>`
+    );
+    res.send(html);
+  });
 });
 
-app.get('/page', (req, res) => {
-  res.send('하위하위~');
+app.get('/page/:pageId', (req, res) => {
+  res.send(req.params);
 });
 
 // app.listen : 포트 번호(3000)로 listen()가 실행될 때 웹서버가 실행되고, 콜백함수 안의 코드가 실행된다
