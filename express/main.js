@@ -25,6 +25,8 @@ app.get('*', function (req, res, next) {
     next();
   });
 });
+// 정적 파일(static file) 미들웨어: http://localhost:8000/images/smile.jpg 경로로 입력하면 파일이 출력됨
+app.use(express.static('public')); // public 디렉토리 속 파일을 정적파일로 만든다
 
 // app.get(app 객체의 get 메서드) : 라우트(route)
 // 인자 1 : 경로(path) / 인자 2 : 콜백함수
@@ -36,6 +38,7 @@ app.get('/', function (req, res) {
     title,
     list,
     `<h2>${title}</h2>${description}`,
+    `<img src="/images/smile.jpg" style="width:300px; display:block; margin:10px 0 10px 0;">`,
     `<a href="/create">create</a>`
   );
   res.send(html);
