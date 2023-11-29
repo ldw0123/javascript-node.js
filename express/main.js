@@ -10,12 +10,15 @@ const compression = require('compression'); // compression
 const sanitizeHtml = require('sanitize-html');
 const template = require('./lib/template.js');
 
+// 라우터
+var topicRoutes = require('./routes/topic');
+
 // ⭐️ 미들웨어: Express.js 프레임워크에서 HTTP 요청과 응답을 처리하기 위한 중간에 위치한 함수이다
 // 미들웨어는 주로 app.use() 메서드를 통해 Express 애플리케이션에 추가한다.
 
-// ⭐️ body-parser 미들웨어: 클라이언트에서 서버로 전송된 HTTP 요청의 body(본문. 데이터가 들어가는 부분)를 추출한다
+// body-parser 미들웨어: 클라이언트에서 서버로 전송된 HTTP 요청의 body(본문. 데이터가 들어가는 부분)를 추출한다
 app.use(bodyParser.urlencoded({ extended: false }));
-// ⭐️ compression 미들웨어: 페이지 크기 압축
+// compression 미들웨어: 페이지 크기 압축
 app.use(compression());
 // 미들웨어 만들기
 app.get('*', function (req, res, next) {
@@ -39,113 +42,24 @@ app.get('/', function (req, res) {
     list,
     `<h2>${title}</h2>${description}`,
     `<img src="/images/smile.jpg" style="width:300px; display:block; margin:10px 0 10px 0;">`,
-    `<a href="/create">create</a>`
+    `<a href="/topic/create">create</a>`
   );
   res.send(html);
 });
 
-// 동적 라우팅에는 ':' 를 붙인다 /page/:pageId
-app.get('/page/:pageId', function (req, res) {
-  var filteredId = path.parse(req.params.pageId).base;
-  fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-    var title = req.params.pageId;
-    var sanitizedTitle = sanitizeHtml(title);
-    var sanitizedDescription = sanitizeHtml(description, {
-      allowedTags: ['h1'],
-    });
-    var list = template.list(req.list);
-    var html = template.HTML(
-      sanitizedTitle,
-      list,
-      `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
-      ` <a href="/create">create</a>
-          <a href="/update/${sanitizedTitle}">update</a>
-          <form action="/delete_process" method="post">
-            <input type="hidden" name="id" value="${sanitizedTitle}">
-            <input type="submit" value="delete">
-          </form>`
-    );
-    res.send(html);
-  });
+// '/topic'으로 시작하는 주소들에게 topicRoutes 이름의 미들웨어를 적용한다
+app.use('/topic', topicRoutes);
+
+// 404 Error 미들웨어: 미들웨어는 순차적으로 실행되기 때문에 마지막에 찾을 수 없을 때 처리하도록 맨 뒤에 둠
+app.use(function (req, res, next) {
+  res.status(404).send('404 NOT FOUND <br/><br/> 페이지를 찾을 수 없습니다');
 });
 
-app.get('/create', function (req, res) {
-  var title = 'WEB - create';
-  var list = template.list(req.list);
-  var html = template.HTML(
-    title,
-    list,
-    `
-      <form action="/create_process" method="post">
-        <p><input type="text" name="title" placeholder="title"></p>
-        <p>
-          <textarea name="description" placeholder="description"></textarea>
-        </p>
-        <p>
-          <input type="submit">
-        </p>
-      </form>
-    `,
-    ''
-  );
-  res.send(html);
-});
-
-app.post('/create_process', function (req, res) {
-  var post = req.body; // body-parser
-  var title = post.title;
-  var description = post.description;
-  fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-    res.writeHead(302, { Location: `/?id=${title}` });
-    res.end();
-  });
-});
-
-app.get('/update/:pageId', function (req, res) {
-  var filteredId = path.parse(req.params.pageId).base;
-  fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
-    var title = req.params.pageId;
-    var list = template.list(req.list);
-    var html = template.HTML(
-      title,
-      list,
-      `
-        <form action="/update_process" method="post">
-          <input type="hidden" name="id" value="${title}">
-          <p><input type="text" name="title" placeholder="title" value="${title}"></p>
-          <p>
-            <textarea name="description" placeholder="description">${description}</textarea>
-          </p>
-          <p>
-            <input type="submit">
-          </p>
-        </form>
-        `,
-      `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
-    );
-    res.send(html);
-  });
-});
-
-app.post('/update_process', function (req, res) {
-  var post = req.body;
-  var id = post.id;
-  var title = post.title;
-  var description = post.description;
-  fs.rename(`data/${id}`, `data/${title}`, function (error) {
-    fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
-      res.redirect(`/?id=${title}`);
-    });
-  });
-});
-
-app.post('/delete_process', function (req, res) {
-  var post = req.body;
-  var id = post.id;
-  var filteredId = path.parse(id).base;
-  fs.unlink(`data/${filteredId}`, function (error) {
-    res.redirect('/');
-  });
+// 에러 핸들러 Error Handler
+// next(err)가 호출되면, 인자가 4개인 함수가 있는 미들웨어를 호출되면서 에러처리가 된다
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 // app.listen : 포트 번호(3000)로 listen()가 실행될 때 웹서버가 실행되고, 콜백함수 안의 코드가 실행된다
