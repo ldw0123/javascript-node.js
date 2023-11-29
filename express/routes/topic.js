@@ -1,8 +1,11 @@
-// topic 주소
 const express = require('express'); // express 모듈 로드
 const router = express.Router(); // express.Router() 메서드 호출
+const path = require('path');
+const fs = require('fs');
+const sanitizeHtml = require('sanitize-html');
+const template = require('../lib/template.js');
 
-app.get('/topic/create', function (req, res) {
+router.get('/create', function (req, res) {
   var title = 'WEB - create';
   var list = template.list(req.list);
   var html = template.HTML(
@@ -24,7 +27,7 @@ app.get('/topic/create', function (req, res) {
   res.send(html);
 });
 
-app.post('/topic/create_process', function (req, res) {
+router.post('/create_process', function (req, res) {
   var post = req.body; // body-parser
   var title = post.title;
   var description = post.description;
@@ -33,7 +36,7 @@ app.post('/topic/create_process', function (req, res) {
   });
 });
 
-app.get('/topic/update/:pageId', function (req, res) {
+router.get('/update/:pageId', function (req, res) {
   var filteredId = path.parse(req.params.pageId).base;
   fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
     var title = req.params.pageId;
@@ -59,7 +62,7 @@ app.get('/topic/update/:pageId', function (req, res) {
   });
 });
 
-app.post('/topic/update_process', function (req, res) {
+router.post('/update_process', function (req, res) {
   var post = req.body;
   var id = post.id;
   var title = post.title;
@@ -71,7 +74,7 @@ app.post('/topic/update_process', function (req, res) {
   });
 });
 
-app.post('/topic/delete_process', function (req, res) {
+router.post('/delete_process', function (req, res) {
   var post = req.body;
   var id = post.id;
   var filteredId = path.parse(id).base;
@@ -81,7 +84,7 @@ app.post('/topic/delete_process', function (req, res) {
 });
 
 // 동적 라우팅에는 ':' 를 붙인다 /page/:pageId
-app.get('/topic/:pageId', function (req, res, next) {
+router.get('/:pageId', function (req, res, next) {
   var filteredId = path.parse(req.params.pageId).base;
   fs.readFile(`data/${filteredId}`, 'utf8', function (err, description) {
     if (err) {
@@ -109,3 +112,6 @@ app.get('/topic/:pageId', function (req, res, next) {
     }
   });
 });
+
+// 현 파일이 모듈로서 동작하게 하기 위해서는 router 객체를 export해야 함
+module.exports = router;
